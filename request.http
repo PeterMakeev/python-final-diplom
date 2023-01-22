@@ -1,0 +1,191 @@
+###
+#Регистрация пользователя. Можно выбрать тип пользователя (Покупатель/магазин), по умолчанию покупатель
+POST http://localhost:8000/api/v1/user/register
+Content-Type: application/json
+
+{
+"first_name": "Mike",
+"last_name": "Smith",
+"username": "Smith",
+"email": "mikesmith@@example.com",
+"password": "mmm11111",
+"company": "GigaPhone",
+"position": "Seller"
+}
+
+###
+#Подтверждение регистрации, токен можно взять в админке
+POST http://localhost:8000/api/v1/user/register/confirm
+Content-Type: application/json
+
+{
+"email": "mikesmith@@example.com",
+"token" : "44d9d2104096e482775712ab28bb40dfa3cd6"
+}
+
+###
+#Активировать учетную запись
+POST http://localhost:8000/api/v1/user/login
+Content-Type: application/json
+
+{
+"email": "mikesmith@@example.com",
+"password": "mmm11111"
+}
+
+
+###
+#Восставновление пароля по email
+POST http://localhost:8000/api/v1/user/password_reset
+Content-Type: application/json
+
+{
+"email": "mikesmith@@example.com"
+}
+
+
+###
+#Создать контакты пользователя
+POST http://localhost:8000/api/v1/user/contact
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+Content-Type: application/json
+
+{
+"city": "Moscow",
+"street": "Lenina",
+"house": "12",
+"phone":"123456"
+}
+
+
+###
+#Получить контакты пользователя
+GET  http://localhost:8000/api/v1/user/contact
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+
+
+###
+#Редактировать существующие контакты пользователя
+PUT  http://localhost:8000/api/v1/user/contact
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+Content-Type: application/json
+
+{
+"id": "1",
+"city": "Moscow",
+"street": "Sadovaya",
+"house": "23",
+"phone":"777777"
+}
+
+
+###
+#Удаление контакта пользователя
+DELETE   http://localhost:8000/api/v1/user/contact
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+Content-Type: application/json
+
+{
+"items": "1"
+}
+
+
+
+###
+#Получаем все данные пользователя
+GET  http://localhost:8000/api/v1/user/details
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+
+
+###
+#Обновить или добавить прайс лист поставщика
+POST http://localhost:8000/api/v1/partner/update
+Authorization: Token 129bb81e4aecf3bd7b298662214f13a90712da12
+Content-Type: application/json
+
+{
+"url": "https://raw.githubusercontent.com/netology-code/pd-diplom/master/data/shop1.yaml"
+}
+
+
+###
+#Получаем статус поставщика
+GET  http://localhost:8000/api/v1/partner/state
+Authorization: Token 129bb81e4aecf3bd7b298662214f13a90712da12
+
+
+###
+#Редактируем статус поставщика
+POST   http://localhost:8000/api/v1/partner/state
+Authorization: Token 129bb81e4aecf3bd7b298662214f13a90712da12
+Content-Type: application/json
+
+{
+"state": "true"
+}
+
+
+###
+#Получаем список всех магазинов
+GET  http://localhost:8000/api/v1/shops
+
+
+###
+#Получаем список всех категорий
+GET  http://localhost:8000/api/v1/categories
+
+
+###
+#Поиск товаров
+GET  http://localhost:8000/api/v1/products?shop_id=1
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+
+
+###
+#Добавляем товары в корзину
+POST http://localhost:8000/api/v1/basket
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+Content-Type: application/json
+
+{
+"items": [{"product_info": 1, "quantity": 2}]
+}
+
+
+###
+#Получить содержимое корзины пользователя
+GET http://localhost:8000/api/v1/basket
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+
+
+###
+#Редактировать количество конкретного товара в корзине пользователя
+PUT http://localhost:8000/api/v1/basket
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+Content-Type: application/json
+
+{
+"items": [{"id": 67, "quantity": 3}]
+}
+
+
+###
+#Удалить конкретную позицию в заказе
+DELETE  http://localhost:8000/api/v1/basket
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+Content-Type: application/json
+
+{
+"items": "67"
+}
+
+
+###
+#Оформляет заказ из корзины пользователя. Использовать токен авторизации пользователя
+POST http://localhost:8000/api/v1/order
+Authorization: Token 54c6bdf1d2a2f5bd8b5003599a4464e6aef3b923
+Content-Type: application/json
+
+{
+"id": 1,"contact": 1
+}
