@@ -60,13 +60,6 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'phone', 'city', 'street', 'house']
 
 
-
-
-
-#class OrderItemCreateSerializer(OrderItemSerializer):
-    #product_info = ProductInfoSerializer(read_only=True)
-
-
 class OrderSerializer(serializers.ModelSerializer):
     ordered_items = ProductInfoSerializer
     #ordered_items = OrderItemCreateSerializer(read_only=True, many=True)

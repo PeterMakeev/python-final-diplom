@@ -13,6 +13,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from yaml import load as load_yaml, Loader
 import json
@@ -320,7 +321,7 @@ class ShopView(ListAPIView):
     serializer_class = ShopSerializer
 
 
-class CategoryView(ListAPIView):
+class CategoryViewSet(ModelViewSet):
     '''
     Просмотр категорий
     '''
