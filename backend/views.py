@@ -19,7 +19,7 @@ from yaml import load as load_yaml, Loader
 import json
 from ujson import loads as load_json
 from .permissions import IsOwnerOrReadOnly
-from .signals import new_user_registered, new_order
+from .tasks import password_reset_token_created, new_user_registered, new_order
 from .serializers import UserSerializer, ContactSerializer, ShopSerializer, CategorySerializer, \
     ProductInfoSerializer, OrderSerializer, OrderItemSerializer
 from .models import ConfirmEmailToken, Contact, Shop, Category, Product, ProductInfo, Order, \
@@ -45,7 +45,7 @@ class RegisterUser(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data['password'])
                     user.save()
-                    new_user_registered.send(sender=self.__class__, user_id=user.id)
+                    new_user_registered(user_id=user.id)
                     return Response({'status': True})
                 else:
                     return Response({'status': False, 'error': user_serializer.errors},
@@ -477,8 +477,6 @@ class OrderView(APIView):
         '''
         Размещение заказов пользователями
         '''
-        #if not request.user.is_authenticated:
-           # return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         if {'id', 'contact'}.issubset(request.data):
             try:
@@ -490,7 +488,7 @@ class OrderView(APIView):
                 return JsonResponse({'Status': False, 'Errors': 'Неправильно указаны аргументы'})
             else:
                 if is_updated:
-                    new_order.send(sender=self.__class__, user_id=request.user.id)
+                    new_order(user_id=request.user.id)
                     return JsonResponse({'Status': True})
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+        return JsonResponse({'status': False, 'Errors': 'Не указаны все необходимые аргументы'})
